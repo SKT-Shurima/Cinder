@@ -1,0 +1,4 @@
+node_modules/
+README.assets/
+src/assets/
+package-lock.json

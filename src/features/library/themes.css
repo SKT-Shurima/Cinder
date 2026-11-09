@@ -1,0 +1,241 @@
+/**
+ * 主题卡片以 AI 生成摄影、插画封面与下方文字建立层次，界面不额外叠加标签或编号。
+ * 名称和介绍沿用当前主题的文字色；本地图片保留固定尺寸并淡入，不引入平台图片请求。
+ */
+.theme-shelf {
+  margin: 10px 0 36px;
+}
+.main-content.theme-page {
+  padding: 24px 32px 0;
+}
+.theme-shelf.is-compact {
+  margin-top: 32px;
+}
+.theme-section-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.theme-section-heading h1 {
+  font-size: 30px;
+  margin: 10px 0;
+}
+.theme-section-heading h2 {
+  font-size: 18px;
+  margin: 7px 0;
+}
+.theme-section-heading h2 small {
+  font-size: 11px;
+  color: var(--faint);
+  font-weight: 400;
+  margin-left: 10px;
+  white-space: nowrap;
+}
+.theme-section-heading > button {
+  flex-shrink: 0;
+  min-height: 44px;
+}
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 25px 20px;
+}
+.is-compact .theme-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px 18px;
+}
+.theme-card {
+  text-align: left;
+  min-width: 0;
+  padding: 0;
+  border-radius: 12px;
+}
+.theme-artwork {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel-bg);
+}
+.theme-cover-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+.theme-artwork[data-cover-ready="true"] .theme-cover-image {
+  opacity: 1;
+}
+.theme-card:hover .theme-card-title {
+  color: var(--accent);
+}
+.theme-card-title {
+  display: block;
+  margin: 12px 0 5px;
+  font-size: 14px;
+  font-weight: 550;
+  line-height: 1.5;
+}
+.theme-card-description {
+  display: block;
+  font-size: 11px;
+  color: var(--secondary);
+  line-height: 1.7;
+}
+.theme-filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 25px;
+}
+.theme-filters .category-tabs {
+  margin: 0;
+}
+.theme-filters .category-tabs button {
+  min-height: 44px;
+  font-size: 12px;
+}
+.theme-filters .inline-search {
+  flex-shrink: 0;
+  width: 220px;
+}
+.theme-no-results {
+  padding: 60px 0;
+  text-align: center;
+  color: var(--secondary);
+}
+.theme-back {
+  min-height: 44px;
+  margin-bottom: 10px;
+}
+.theme-detail {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+.theme-detail > :not(.song-table) {
+  flex-shrink: 0;
+}
+.theme-filters .inline-search {
+  height: 38px;
+}
+.theme-filters .inline-search input {
+  width: 100%;
+  font-size: 12px;
+}
+.theme-detail-heading {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin: 6px 0 24px;
+}
+.theme-detail-heading > .theme-artwork {
+  width: 190px;
+  flex-shrink: 0;
+}
+.theme-detail-heading h1 {
+  font-size: 32px;
+  margin: 10px 0;
+}
+.theme-detail-heading p {
+  color: var(--secondary);
+  font-size: 13px;
+  margin: 0 0 14px;
+}
+.theme-detail-count {
+  color: var(--faint);
+  font-size: 12px;
+}
+.theme-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--secondary);
+  font-size: 12px;
+  margin: 0 0 16px;
+}
+.theme-loading > svg {
+  color: var(--accent);
+}
+.theme-track-skeleton > div {
+  height: 66px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 1px solid var(--line);
+  padding: 10px 16px;
+}
+.theme-track-skeleton i,
+.theme-track-skeleton span,
+.theme-track-skeleton small {
+  display: block;
+  background: linear-gradient(90deg, var(--hover), var(--accent-wash), var(--hover));
+  background-size: 200% 100%;
+  animation: theme-loading 1.5s ease-in-out infinite;
+  border-radius: 6px;
+}
+.theme-track-skeleton i {
+  width: 42px;
+  height: 42px;
+}
+.theme-track-skeleton span {
+  height: 12px;
+  width: 38%;
+}
+.theme-track-skeleton small {
+  height: 10px;
+  width: 14%;
+  margin-left: auto;
+}
+@keyframes theme-loading {
+  to {
+    background-position: -200% 0;
+  }
+}
+@media (min-width: 1700px) {
+  .theme-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1150px) {
+  .theme-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .theme-filters {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 850px) {
+  .theme-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .theme-detail-heading {
+    gap: 20px;
+  }
+  .theme-detail-heading > .theme-artwork {
+    width: 150px;
+  }
+  .theme-section-heading h2 small {
+    display: block;
+    margin: 6px 0 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-cover-image {
+    transition: none;
+  }
+  .theme-track-skeleton i,
+  .theme-track-skeleton span,
+  .theme-track-skeleton small {
+    animation: none;
+  }
+}

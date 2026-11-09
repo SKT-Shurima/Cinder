@@ -1,0 +1,219 @@
+/**
+ * 歌手浏览与统一播放状态的主题样式，动画只使用 transform 和 opacity。
+ * 减少动态效果或应用进入后台时停止音柱循环，不影响实际播放状态。
+ */
+.playback-indicator {
+  display: inline-flex;
+  width: 22px;
+  height: 23px;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: var(--accent);
+  flex: 0 0 auto;
+}
+.playback-indicator i {
+  display: block;
+  width: 2.5px;
+  height: 18px;
+  background: currentColor;
+  border-radius: 3px;
+  transform: scaleY(0.35);
+}
+.playback-indicator i:nth-child(2n) {
+  transform: scaleY(0.7);
+}
+.playback-indicator i:nth-child(3) {
+  transform: scaleY(0.95);
+}
+.playback-indicator.is-playing i {
+  animation: cinder-playback-bar 780ms ease-in-out infinite alternate;
+  animation-delay: calc(var(--bar-order) * -173ms);
+}
+@keyframes cinder-playback-bar {
+  0% {
+    transform: scaleY(0.2);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scaleY(0.85);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(0.45);
+    opacity: 0.88;
+  }
+}
+:root[data-foreground="false"] .playback-indicator i {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .playback-indicator.is-playing i {
+    animation: none;
+  }
+}
+.player-state-indicator {
+  margin-right: 3px;
+  width: 17px;
+}
+.artwork-unavailable {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  background: var(--surface);
+  color: var(--secondary);
+}
+.collection-view-tabs {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.collection-view-tabs > .text-button {
+  font-size: 12px;
+}
+.artist-library {
+  padding: 30px 32px 45px;
+}
+.artist-library-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.artist-library-heading h1 {
+  margin: 8px 0 10px;
+  font-size: 30px;
+}
+.artist-library-heading p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--secondary);
+}
+.artist-library-heading .inline-search {
+  width: 240px;
+}
+.artist-library-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.artist-library-actions .outline-button {
+  white-space: nowrap;
+  min-height: 38px;
+}
+.artist-cloud {
+  position: relative;
+  width: 100%;
+}
+.artist-card {
+  position: absolute;
+  min-width: 0;
+  text-align: center;
+  pointer-events: none;
+}
+.artist-card:hover,
+.artist-card:focus-within {
+  z-index: 2;
+}
+.artist-art {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border-radius: 50%;
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+}
+.artist-art:active:not(:disabled) {
+  transform: none;
+}
+.artist-card.is-dragging {
+  z-index: 4;
+}
+.artist-card.is-dragging .artist-art {
+  cursor: grabbing;
+}
+/**
+ * 保留列表版头像的原始颜色和圆形裁切，卡片内部不增加染色、模糊或独立头像层。
+ * 姓名和数量直接显示在原图上，文字不带底板或背景遮罩；圆形大小与位置交给统一运动场管理。
+ */
+.artist-circle {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--surface);
+}
+.artist-circle > .cover {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+}
+.artist-bubble-caption {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 13%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: #fff;
+  text-shadow: 0 1px 2px #0006;
+  pointer-events: none;
+}
+.artist-bubble-caption strong {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: clamp(12px, calc(var(--artist-diameter) * 0.081), 15px);
+  line-height: 1.2;
+  font-weight: 550;
+}
+.artist-bubble-caption > span {
+  font-size: 12px;
+  line-height: 1.25;
+  color: #fffffff0;
+  white-space: nowrap;
+}
+.artist-circle:has(.progressive-artwork:not([data-state="ready"])) .artist-bubble-caption {
+  color: var(--text);
+  text-shadow: none;
+}
+.artist-circle:has(.progressive-artwork:not([data-state="ready"])) .artist-bubble-caption > span {
+  color: var(--secondary);
+}
+.artist-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 50px 12px;
+  color: var(--secondary);
+}
+.artist-status p {
+  width: 100%;
+  text-align: center;
+}
+@media (max-width: 1100px) {
+  .artist-library-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .artist-library-actions {
+    flex-wrap: wrap;
+  }
+}

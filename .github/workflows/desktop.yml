@@ -1,0 +1,56 @@
+# 三种平台分别在对应的原生 runner 构建与运行，测试通过后才保留安装包。
+# 只读源码权限，不发布 Release；首次远程运行前不把 Windows 状态标为已验收。
+name: Desktop build and smoke test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  desktop:
+    name: ${{ matrix.platform }} / ${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            platform: darwin
+            arch: arm64
+          - runner: macos-15-intel
+            platform: darwin
+            arch: x64
+          - runner: windows-2025
+            platform: win32
+            arch: x64
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+      - name: Keep build output outside the source tree
+        run: >-
+          node -e "require('node:fs').appendFileSync(process.env.GITHUB_ENV, 'CINDER_BUILD_DIR=' + require('node:path').join(process.env.RUNNER_TEMP, 'cinder-build') + '\n')"
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - run: npm run package -- --platform=${{ matrix.platform }} --arch=${{ matrix.arch }}
+      - run: npm run smoke -- --platform=${{ matrix.platform }} --arch=${{ matrix.arch }}
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: Cinder-${{ matrix.platform }}-${{ matrix.arch }}
+          path: ${{ runner.temp }}/cinder-build/installers/*
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14

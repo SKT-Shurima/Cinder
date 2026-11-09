@@ -1,0 +1,106 @@
+/**
+ * 斜向磨砂主题：白色与主题色交替形成两道柔和色带，封面仍承担内容主视觉。
+ * 模糊仅用于固定播放栏、搜索浮层及静态封面背景；动画统一使用 transform 和 opacity。
+ */
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  color-scheme: light;
+  --bg: #f4f4f8;
+  --sidebar: #eeeef5;
+  --surface: #f0f0f5;
+  --hover: #e9e9f1;
+  --text: #252631;
+  --secondary: #646574;
+  --faint: #747582;
+  --line: #dedee8;
+  --accent: #b74b06;
+  --accent-hover: #953802;
+  --accent-visual: #ff7c0a;
+  --button-accent: #b74b06;
+  --button-accent-hover: #953802;
+  --accent-wash: #fff0df;
+  --theme-rgb: 255, 124, 10;
+  --ribbon-base: color-mix(in oklab, #fff 80%, rgb(var(--theme-rgb)));
+  --glass-rgb: 250, 250, 254;
+  --glass-opacity: 0.7;
+  --theme-coverage: 70%;
+  --glass-background: rgba(var(--glass-rgb), var(--glass-opacity));
+  --shadow: 0 16px 50px #28283d12;
+  --danger: #b93b4b;
+  --sidebar-width: 202px;
+  --player-height: 88px;
+  --player-reserve: 122px;
+  --play-bg: #292a36;
+  --play-fg: #fff;
+  --stage-tint: #f1edf3;
+  --panel-bg: #fbfbfddf;
+  --lyric-muted: color-mix(in srgb, var(--secondary) 96%, var(--bg));
+  --lyric-near: color-mix(in srgb, var(--secondary) 86%, var(--accent));
+  --lyric-past: color-mix(in srgb, var(--secondary) 93%, var(--bg));
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #191a22;
+  --sidebar: #1d1e28;
+  --surface: #292b37;
+  --hover: #323442;
+  --text: #f0eff6;
+  --secondary: #b7b7c7;
+  --faint: #a0a1b4;
+  --line: #373947;
+  --accent: #ffb46b;
+  --accent-hover: #ffce98;
+  --accent-wash: #473023;
+  --ribbon-base: #191a22;
+  --glass-rgb: 32, 33, 44;
+  --shadow: 0 18px 50px #0004;
+  --danger: #ff9aaa;
+  --play-bg: #eeeef7;
+  --play-fg: #252632;
+  --stage-tint: #2c2936;
+  --panel-bg: #22232edb;
+}
+:root[data-accent="cyan"] {
+  --accent: #007482;
+  --accent-hover: #005d69;
+  --button-accent: #007482;
+  --button-accent-hover: #005d69;
+  --accent-wash: #e0f0f2;
+  --theme-rgb: 40, 172, 187;
+  --accent-visual: #1abbd0;
+}
+:root[data-accent="coral"] {
+  --accent: #b43e59;
+  --accent-hover: #963047;
+  --button-accent: #b43e59;
+  --button-accent-hover: #963047;
+  --accent-wash: #f7e6ed;
+  --theme-rgb: 220, 87, 118;
+  --accent-visual: #ed6385;
+}
+:root[data-accent="violet"] {
+  --accent: #6850b6;
+  --accent-hover: #523c95;
+  --button-accent: #6850b6;
+  --button-accent-hover: #523c95;
+  --accent-wash: #ede8f7;
+  --theme-rgb: 149, 114, 218;
+  --accent-visual: #a489fb;
+}
+:root[data-theme="dark"][data-accent="cyan"] {
+  --accent: #86dbe5;
+  --accent-hover: #b4edf2;
+  --accent-wash: #233d46;
+}
+:root[data-theme="dark"][data-accent="coral"] {
+  --accent: #ffb0c4;
+  --accent-hover: #ffd0dc;
+  --accent-wash: #452d3c;
+}
+:root[data-theme="dark"][data-accent="violet"] {
+  --accent: #c5b2ff;
+  --accent-hover: #dfd3ff;
+  --accent-wash: #373046;
+}

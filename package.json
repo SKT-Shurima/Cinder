@@ -1,0 +1,45 @@
+{
+  "name": "cinder",
+  "productName": "Cinder",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "author": "SKT-Shurima",
+  "description": "Cinder · 文件夹就是歌单的私人音乐播放器",
+  "type": "module",
+  "main": "electron/main.js",
+  "scripts": {
+    "build": "vite build",
+    "start": "node scripts/start.js",
+    "package": "node scripts/package.js",
+    "package:mac:intel": "node scripts/package.js --platform=darwin --arch=x64",
+    "package:mac:apple": "node scripts/package.js --platform=darwin --arch=arm64",
+    "package:win": "node scripts/package.js --platform=win32 --arch=x64",
+    "smoke": "node scripts/smoke.js",
+    "test": "node --test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "lucide-react": "1.66.0",
+    "music-metadata": "12.3.4",
+    "pngjs": "7.0.0",
+    "qrcode": "^1.5.4",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "ssh2": "^1.17.0"
+  },
+  "devDependencies": {
+    "@electron/packager": "20.3.0",
+    "electron": "45.2.1",
+    "eslint": "9.39.1",
+    "eslint-plugin-react": "7.37.5",
+    "globals": "16.5.0",
+    "prettier": "3.9.10",
+    "vite": "8.3.5"
+  },
+  "imports": {
+    "#shared/*": "./shared/*.js"
+  }
+}
