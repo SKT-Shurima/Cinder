@@ -1,11 +1,12 @@
 # 三种平台分别在对应的原生 runner 构建与运行，测试通过后才保留安装包。
-# 只读源码权限，不发布 Release；首次远程运行前不把 Windows 状态标为已验收。
+# 普通分支仅验证；版本标签在三平台全部通过后发布预览安装包。
 name: Desktop build and smoke test
 
 on:
   workflow_dispatch:
   push:
     branches: [main]
+    tags: ["v*"]
   pull_request:
 
 permissions:
@@ -54,3 +55,64 @@ jobs:
           if-no-files-found: error
           compression-level: 0
           retention-days: 14
+
+  release:
+    name: Publish verified preview
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: desktop
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          pattern: Cinder-*
+          path: ${{ runner.temp }}/cinder-installers
+          merge-multiple: true
+      - name: Publish the three verified installers
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          INSTALLER_DIRECTORY: ${{ runner.temp }}/cinder-installers
+        run: |
+          set -euo pipefail
+          version=$(node -p "require('./package.json').version")
+          test "$RELEASE_TAG" = "v$version"
+          installers=(
+            "$INSTALLER_DIRECTORY/Cinder-$version-macos-arm64.dmg"
+            "$INSTALLER_DIRECTORY/Cinder-$version-macos-x64.dmg"
+            "$INSTALLER_DIRECTORY/Cinder-$version-windows-x64.zip"
+          )
+          for installer in "${installers[@]}"; do
+            test -s "$installer"
+          done
+
+          # 已公开的版本保持不变；失败重试仅补全尚未公开的草稿。
+          if state=$(gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq '.isDraft'); then
+            if [ "$state" = "false" ]; then
+              exit 0
+            fi
+          else
+            notes="$RUNNER_TEMP/cinder-release-notes.md"
+            cat > "$notes" <<'NOTES'
+          Cinder 首个公开预览版，采用 MIT License，面向个人曲库整理与桌面开发学习。
+
+          - 本地文件夹、SFTP / SSH、Navidrome / Subsonic 音乐库。
+          - 收藏、自建歌单、50 种主题、播放队列与进度恢复。
+          - 唱机、同步歌词、音浪，以及音效预设、混响和三段均衡。
+          - Apple Silicon Mac、Intel Mac 和 Windows x64 已通过原生 CI 构建及打包应用验证。
+
+          Mac 选择对应芯片的 DMG；Windows 完整解压 ZIP 后运行 Cinder.exe。
+          安装包尚未做官方开发者签名；在线接入与账号会话的现有限制请先阅读 README。
+          NOTES
+            gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+              --verify-tag --draft --prerelease --title "Cinder $version · 公开预览版" --notes-file "$notes"
+          fi
+
+          gh release upload "$RELEASE_TAG" "${installers[@]}" --repo "$GITHUB_REPOSITORY" --clobber
+          gh release edit "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --draft=false
