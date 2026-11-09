@@ -12,7 +12,7 @@
 
 <p align="center">
   <strong>macOS · Apple Silicon / Intel</strong> &nbsp; / &nbsp;
-  <strong>Windows x64 · 候选版</strong> &nbsp; / &nbsp;
+  <strong>Windows x64 · 预览版</strong> &nbsp; / &nbsp;
   <a href="LICENSE">MIT License</a>
 </p>
 
@@ -80,11 +80,13 @@
 
 ## 开始使用
 
+[下载安装包](https://github.com/SKT-Shurima/Cinder/releases)
+
 | 你的设备                  | 选择的版本 | 当前状态                               |
 | ------------------------- | ---------- | -------------------------------------- |
-| macOS 13+ · Apple Silicon | arm64 DMG  | 原生验证通过                           |
-| macOS 13+ · Intel         | x64 DMG    | Rosetta 验证通过，真实 Intel 验证待 CI |
-| Windows 10 / 11 · x64     | ZIP 便携版 | 已交叉构建，待 Windows 环境验收        |
+| macOS 13+ · Apple Silicon | arm64 DMG  | 本机与原生 CI 验证通过                 |
+| macOS 13+ · Intel         | x64 DMG    | Intel 原生 CI 与 Rosetta 验证通过      |
+| Windows 10 / 11 · x64     | ZIP 便携版 | Windows x64 原生 CI 启动与播放验证通过 |
 
 1. Mac 打开 DMG 后拖入“应用程序”；Windows 完整解压 ZIP 后运行 `Cinder.exe`。
 2. 添加自己的音乐文件夹，或连接已有音乐服务器。
